@@ -97,13 +97,22 @@ for each(var tweet in html.div) {
 		mentions = tweet.attribute('data-mentions').toString().trim().split(' ');
 	}
 
+	var media = [];
+	// var aMedia = tweet...a.(@class.indexOf('media') !== -1);
+	var aMedia = y.xpath(tweet, '//a[contains(@class, "media")]')[0];
+	if( aMedia.attribute('data-url').toString().trim() !== '') {
+		media.push(aMedia.attribute('data-url').toString().trim());
+	}
+
+
 	statuses.push({
 		// 'created_at': created_at.toISOString(),
 		'created_at': aTweetTimestamp.span.attribute('data-time').toString(),
 		'user': {
 			'name': tweet.attribute('data-name').toString(),
 			'entities': {
-				'user_mentions': mentions
+				'user_mentions': mentions,
+				'media':media
 			},
 			'id': parseInt(tweet.attribute('data-user-id').toString(), 10),
 			'id_str': tweet.attribute('data-user-id').toString(),
